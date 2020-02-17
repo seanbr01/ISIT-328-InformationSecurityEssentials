@@ -1,0 +1,55 @@
+﻿
+@{
+    Layout = null;
+}
+@model ISIT328.Models.CredentialModel
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <form asp-action="UserLogin" method="post">
+        Login
+        <br />
+        <label>User Name</label> <input asp-for="UserName" />
+        <br />
+        <label>Password</label> <input asp-for="Password" />
+        <br />
+        <button type="submit">submit</button>
+    </form>
+    <br />
+    <div>@ViewBag.LoginStatus + @DateTime.Now</div>
+    <br />
+    <br />
+
+
+    <h3>Display everything from the DB</h3>
+    <table>
+        <tr>
+            <td>FName</td>
+            <td>LName</td>
+            <td>Phone</td>
+            <td>UserName</td>
+            <td>Password</td>
+            <td>PersonID</td>
+        </tr>
+        @foreach (var item in ViewBag.AllPerson as LinkedList<PersonModel>)
+        {
+            <tr>
+                <td>@item.FName</td>
+                <td>@item.LName</td>
+                <td>@item.Phone</td>
+                <td>@item.UserName</td>
+                <td>@item.Password</td>
+                <td>@item.PersonID</td>
+            </tr>
+        }
+    </table>
+
+
+</body>
+</html>
