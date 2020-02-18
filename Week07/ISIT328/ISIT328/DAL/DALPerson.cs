@@ -73,11 +73,16 @@ namespace ISIT328.DAL
             // Your next best option is to use parametized query.
 
             //string query = "SELECT * from Person where UserName = '" + cm.UserName + "' and Password = '" + cm.Password + "'";
-            string query = "SELECT * from Person where UserName = @UserName and Password = @Password";
-            SqlCommand cmd = new SqlCommand(query, conn);
+            //string query = "SELECT * from Person where UserName = @UserName and Password = @Password";
+            SqlCommand cmd = new SqlCommand("GetPersonFromUserNamePassword", conn);
 
-            cmd.Parameters.AddWithValue("@UserName", cm.UserName);
-            cmd.Parameters.AddWithValue("@Password", cm.Password);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            //cmd.Parameters.AddWithValue("@UserName", cm.UserName);
+            //cmd.Parameters.AddWithValue("@Password", cm.Password);
+
+            cmd.Parameters.Add(new SqlParameter("@UserName", cm.UserName));
+            cmd.Parameters.Add(new SqlParameter("@Password", cm.Password));
 
             PersonModel ps = null;
 
