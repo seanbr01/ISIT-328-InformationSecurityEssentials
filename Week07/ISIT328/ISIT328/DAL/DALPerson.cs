@@ -60,45 +60,57 @@ namespace ISIT328.DAL
         /// Returns null otherwise</returns>
         internal PersonModel CheckLoginCredentials(CredentialModel cm)
         {
-            //Step #1 - Connect to the DB
-            string connStr = configuration.GetConnectionString("MyConnString");
-            SqlConnection conn = new SqlConnection(connStr);
-            conn.Open();
 
-            //Step #2 - create a command
-
-            // ---- DANGER ----
-            // This is a problem because the query just concatenates the value coming from the user
-            // The best solution would be to use stored procedures. But you don't have this option.
-            // Your next best option is to use parametized query.
-
-            //string query = "SELECT * from Person where UserName = '" + cm.UserName + "' and Password = '" + cm.Password + "'";
-            //string query = "SELECT * from Person where UserName = @UserName and Password = @Password";
-            SqlCommand cmd = new SqlCommand("GetPersonFromUserNamePassword", conn);
-
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
-
-            //cmd.Parameters.AddWithValue("@UserName", cm.UserName);
-            //cmd.Parameters.AddWithValue("@Password", cm.Password);
-
-            cmd.Parameters.Add(new SqlParameter("@UserName", cm.UserName));
-            cmd.Parameters.Add(new SqlParameter("@Password", cm.Password));
-
-            PersonModel ps = null;
-
-            //Step #3 - query the DB
-            SqlDataReader reader = cmd.ExecuteReader();
-            if (reader.Read())
+            try
             {
-                ps = new PersonModel();
-                ps.PersonID = reader["PersonID"].ToString();
-                ps.FName = reader["FName"].ToString();
+                //Step #1 - Connect to the DB
+                //string connStr = configuration.GetConnectionString("MyConnString");
+                string connStr = configuration.GetConnectionString("");
+                SqlConnection conn = new SqlConnection(connStr);
+                conn.Open();
+
+                //Step #2 - create a command
+
+                // ---- DANGER ----
+                // This is a problem because the query just concatenates the value coming from the user
+                // The best solution would be to use stored procedures. But you don't have this option.
+                // Your next best option is to use parametized query.
+
+                //string query = "SELECT * from Person where UserName = '" + cm.UserName + "' and Password = '" + cm.Password + "'";
+                //string query = "SELECT * from Person where UserName = @UserName and Password = @Password";
+                SqlCommand cmd = new SqlCommand("GetPersonFromUserNamePassword", conn);
+
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                //cmd.Parameters.AddWithValue("@UserName", cm.UserName);
+                //cmd.Parameters.AddWithValue("@Password", cm.Password);
+
+                cmd.Parameters.Add(new SqlParameter("@UserName", cm.UserName));
+                cmd.Parameters.Add(new SqlParameter("@Password", cm.Password));
+
+                PersonModel ps = null;
+
+                //Step #3 - query the DB
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    ps = new PersonModel();
+                    ps.PersonID = reader["PersonID"].ToString();
+                    ps.FName = reader["FName"].ToString();
+                }
+
+                //Step 4
+                conn.Close();
+
+                return ps;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("So sorry, something went wrong!");
             }
 
-            //Step 4
-            conn.Close();
 
-            return ps;
+            
         }
     }
 }

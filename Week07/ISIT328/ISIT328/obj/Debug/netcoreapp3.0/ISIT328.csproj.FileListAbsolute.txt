@@ -248,3 +248,4 @@ D:\Repo\ISIT-328-InformationSecurityEssentials\Week07\ISIT328\ISIT328\obj\Debug\
 D:\Repo\ISIT-328-InformationSecurityEssentials\Week07\ISIT328\ISIT328\obj\Debug\netcoreapp3.0\ISIT328.RazorTargetAssemblyInfo.cs
 D:\Repo\ISIT-328-InformationSecurityEssentials\Week07\ISIT328\ISIT328\obj\Debug\netcoreapp3.0\ISIT328.Views.pdb
 D:\Repo\ISIT-328-InformationSecurityEssentials\Week07\ISIT328\ISIT328\obj\Debug\netcoreapp3.0\ISIT328.csproj.CopyComplete
+D:\Repo\ISIT-328-InformationSecurityEssentials\Week07\ISIT328\ISIT328\obj\Debug\netcoreapp3.0\Razor\Views\Shared\ErrorPage.cshtml.g.cs

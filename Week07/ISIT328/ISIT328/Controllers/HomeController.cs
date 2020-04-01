@@ -37,51 +37,63 @@ namespace ISIT328.Controllers
         
         public IActionResult UserLogin(CredentialModel cm)
         {
-            // write our regex here
 
-            var input = cm.Password;
-            var input2 = cm.UserName;
-
-            // just get the info to display all users
-            DALPerson pd = new DALPerson(this._configuration);
-            LinkedList<PersonModel> allPerson = pd.GetAllPerson();
-            ViewBag.AllPerson = allPerson;
-
-            var blackList = new string[] { " ", "'", "\"", "-"};
-
-            bool testPassed = true;
-            foreach (string pattern in blackList)
+            try
             {
-                foreach (char character in input)
+                // write our regex here
+
+                var input = cm.Password;
+                var input2 = cm.UserName;
+
+                // just get the info to display all users
+                DALPerson pd = new DALPerson(this._configuration);
+                LinkedList<PersonModel> allPerson = pd.GetAllPerson();
+                ViewBag.AllPerson = allPerson;
+
+                var blackList = new string[] { " ", "'", "\"", "-" };
+
+                bool testPassed = true;
+                foreach (string pattern in blackList)
                 {
-                    if (Regex.IsMatch(character.ToString(), pattern))
+                    foreach (char character in input)
                     {
-                        testPassed = false;
-                        break;
+                        if (Regex.IsMatch(character.ToString(), pattern))
+                        {
+                            testPassed = false;
+                            break;
+                        }
                     }
+                    foreach (char character in input2)
+                    {
+                        if (Regex.IsMatch(character.ToString(), pattern))
+                        {
+                            testPassed = false;
+                            break;
+                        }
+                    }
+
                 }
-                foreach (char character in input2)
+
+                // everything is fine here. No need to change anything here
+                PersonModel pm = (testPassed) ? pd.CheckLoginCredentials(cm) : null;
+                if (pm == null)
                 {
-                    if (Regex.IsMatch(character.ToString(), pattern))
-                    {
-                        testPassed = false;
-                        break;
-                    }
+                    ViewBag.LoginStatus = "Login Failed!!";
                 }
-                
+                else
+                {
+                    ViewBag.LoginStatus = "Login Succeeded";
+                }
+                return View("Index");
+
             }
 
-            // everything is fine here. No need to change anything here
-            PersonModel pm = (testPassed) ?  pd.CheckLoginCredentials(cm) : null;
-            if (pm == null)
+            catch (Exception ex)
             {
-                ViewBag.LoginStatus = "Login Failed!!";
+                return View("ErrorPage");
             }
-            else
-            {
-                ViewBag.LoginStatus = "Login Succeeded";
-            }
-            return View("Index");
+
+            
         }
     }
 }
